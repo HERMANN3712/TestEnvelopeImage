@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="gridPane" maxHeight="-Infinity"
+	maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+	prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="application.AppMainController">
+	<columnConstraints>
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+			prefWidth="100.0" />
+		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+			prefWidth="100.0" />
+	</columnConstraints>
+	<rowConstraints>
+		<RowConstraints maxHeight="58.0" minHeight="30.0"
+			prefHeight="58.0" vgrow="SOMETIMES" />
+		<RowConstraints maxHeight="1.7976931348623157E308"
+			minHeight="10.0" prefHeight="600.0" vgrow="SOMETIMES" />
+	</rowConstraints>
+	<children>
+		<AnchorPane GridPane.columnSpan="2">
+			<children>
+				<Button fx:id="openButton" mnemonicParsing="false"
+					onAction="#onOpenButton" text="Open" AnchorPane.leftAnchor="0.0"
+					AnchorPane.topAnchor="0.0" />
+				<Slider fx:id="thresholdSlider" max="255.0"
+					onMouseReleased="#onMouseReleased" showTickLabels="true"
+					showTickMarks="true" value="100.0" AnchorPane.leftAnchor="90.0"
+					AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+			</children>
+			<padding>
+				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+			</padding>
+		</AnchorPane>
+		<Pane fx:id="pane1" maxHeight="1.7976931348623157E308"
+			maxWidth="1.7976931348623157E308"
+			style="-fx-background-color: #d74b2d;" GridPane.rowIndex="1">
+			<children>
+				<ImageView fx:id="imageSource" fitHeight="${pane1.height}"
+					fitWidth="${pane1.width}" managed="false" pickOnBounds="true"
+					preserveRatio="true" smooth="false">
+					<image>
+						<Image url="logan-weaver-zeaDgAjM5B8-unsplash.jpg" />
+					</image>
+				</ImageView>
+			</children>
+		</Pane>
+		<Pane fx:id="pane2" maxHeight="1.7976931348623157E308"
+			maxWidth="1.7976931348623157E308"
+			style="-fx-background-color: #00FF00;" GridPane.columnIndex="1"
+			GridPane.rowIndex="1">
+			<children>
+				<ImageView fx:id="imageOut" fitHeight="${pane2.height}"
+					fitWidth="${pane2.width}" managed="false" pickOnBounds="true"
+					preserveRatio="true" smooth="false">
+					<image>
+						<Image url="samuel-sng-OS2lbjaAe7E-unsplash.jpg" />
+					</image>
+				</ImageView>
+			</children>
+		</Pane>
+	</children>
+	<padding>
+		<Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+	</padding>
+</GridPane>
