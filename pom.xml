@@ -89,7 +89,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>libs/</classpathPrefix>
-							<mainClass>application.Main</mainClass>
+							<mainClass>application.SuperMain</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
