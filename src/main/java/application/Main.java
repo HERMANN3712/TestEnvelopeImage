@@ -18,14 +18,15 @@ public class Main extends Application {
 
 	static {
 		try {
-			loadJarDll("/opencv_java440.dll");
+			loadJarDll("opencv_java440.dll");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}		
 	}
 	
 	public static void loadJarDll(String name) throws IOException {
-	    InputStream in = Main.class.getResourceAsStream(name);
+	    InputStream in = Main.class.getClassLoader().getResourceAsStream(name);
+	    System.out.println(in);
 	    byte[] buffer = new byte[1024];
 	    int read = -1;
 	    File temp = File.createTempFile(name, "");
