@@ -40,6 +40,10 @@ public class OpenCvObject {
 	public Image getImageSource() {
 		return this.checked ? ConvertToImg(matrix) : null;
 	}
+	
+	public Image getImageIntermediate(Integer thresholdValue ) {
+		return this.checked ? ThreholdImg(matrix, thresholdValue) : null;
+	}
 
 	public Image getImageOut(Integer thresholdValue) {
 		return this.checked ? EnvelopeImg(matrix, thresholdValue ) : null;

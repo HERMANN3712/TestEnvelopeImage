@@ -22,6 +22,8 @@ public class AppMainController implements Initializable {
 	@FXML
 	private Button openButton;
 	@FXML
+	private Button statusButton;
+	@FXML
 	private GridPane gridPane;
 	@FXML
 	private Slider thresholdSlider;
@@ -56,15 +58,29 @@ public class AppMainController implements Initializable {
 			img = new OpenCvObject(selectedFile.toString());
 
 			if (img != null) {
+
 				runTraitementImage();
 				imageSource.setImage(img.getImageSource());
-
+				statusButton.setText("Origin");
 				System.out.println("Image is changed");
-
 			}
 		}
 
 	};
+
+	// Event Listener on Button[#openButton].onAction
+	@FXML
+	public void onIntermediateButton(ActionEvent event) {
+		if (img == null)
+			return;
+		boolean status = !statusButton.getText().equals("Origin");
+		statusButton.setText(status ? "Origin" : "Inter");
+		if (status) {
+			imageSource.setImage(img.getImageSource());
+		} else {
+			imageSource.setImage(img.getImageIntermediate((int) thresholdSlider.getValue()));
+		}
+	}
 
 	private void ListingThreads() {
 		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
@@ -84,6 +100,10 @@ public class AppMainController implements Initializable {
 		int value = (int) Math.round(thresholdSlider.getValue());
 		System.out.format("Value threshold : %d\n", value);
 		if (img != null && value != lastSliderValue) {
+			if(!statusButton.getText().equals("Origin"))
+			{
+				imageSource.setImage(img.getImageIntermediate((int) thresholdSlider.getValue()));
+			}
 			runTraitementImage();
 			lastSliderValue = value;
 		}
@@ -105,7 +125,9 @@ public class AppMainController implements Initializable {
 			System.out.println("Inside : " + Thread.currentThread().getName());
 			Thread.currentThread().setName("Process Image");
 			Image newImg = img.getImageOut((int) Math.round(thresholdSlider.getValue()));
-			javafx.application.Platform.runLater(() -> imageOut.setImage(newImg));
+			javafx.application.Platform.runLater(() -> {
+				imageOut.setImage(newImg);
+			});
 		}).start();
 	}
 
