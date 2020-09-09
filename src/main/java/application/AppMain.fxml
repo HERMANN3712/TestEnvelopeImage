@@ -19,8 +19,8 @@
 		<AnchorPane GridPane.columnSpan="2">
 			<children>
 				<Button fx:id="openButton" mnemonicParsing="false" onAction="#onOpenButton" text="Open" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Button fx:id="statusButton" mnemonicParsing="false" onAction="#onIntermediateButton" text="Origin" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="0.0" />
-				<Slider fx:id="thresholdSlider" max="255.0" onMouseReleased="#onMouseReleased" showTickLabels="true" showTickMarks="true" value="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Button fx:id="statusButton" mnemonicParsing="false" onAction="#onIntermediateButton" text="Intermediate" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="0.0" />
+				<Slider fx:id="thresholdSlider" max="255.0" onMouseReleased="#onMouseReleased" showTickLabels="true" showTickMarks="true" value="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
 			</children>
 			<padding>
 				<Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

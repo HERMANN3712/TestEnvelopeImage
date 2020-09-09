@@ -60,7 +60,7 @@ public class AppMainController implements Initializable {
 
 				runTraitementImage();
 				imageSource.setImage(img.getImageSource());
-				statusButton.setText("Origin");
+				statusButton.setText("Intermediate");
 				
 			}
 		}
@@ -72,12 +72,12 @@ public class AppMainController implements Initializable {
 	public void onIntermediateButton(ActionEvent event) {
 		if (img == null)
 			return;
-		boolean status = !statusButton.getText().equals("Origin");
-		statusButton.setText(status ? "Origin" : "Inter");
+		boolean status = statusButton.getText().equals("Intermediate");
+		statusButton.setText(status ? "Origin" : "Intermediate");
 		if (status) {
-			imageSource.setImage(img.getImageSource());
-		} else {
 			imageSource.setImage(img.getImageIntermediate((int) thresholdSlider.getValue()));
+		} else {
+			imageSource.setImage(img.getImageSource());
 		}
 	}
 
@@ -86,7 +86,7 @@ public class AppMainController implements Initializable {
 		int value = (int) Math.round(thresholdSlider.getValue());
 
 		if (img != null && value != lastSliderValue) {
-			if(!statusButton.getText().equals("Origin"))
+			if(!statusButton.getText().equals("Intermediate"))
 			{
 				imageSource.setImage(img.getImageIntermediate((int) thresholdSlider.getValue()));
 			}
