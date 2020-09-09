@@ -26,7 +26,7 @@ public class Main extends Application {
 	
 	public static void loadJarDll(String name) throws IOException {
 	    InputStream in = Main.class.getClassLoader().getResourceAsStream(name);
-	    System.out.println(in);
+
 	    byte[] buffer = new byte[1024];
 	    int read = -1;
 	    File temp = File.createTempFile(name, "");

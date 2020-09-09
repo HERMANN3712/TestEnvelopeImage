@@ -39,8 +39,7 @@ public class AppMainController implements Initializable {
 	// Event Listener on Button[#openButton].onAction
 	@FXML
 	public void onOpenButton(ActionEvent event) {
-		System.out.println("Click on Button 'Open'");
-
+		
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(
@@ -62,7 +61,7 @@ public class AppMainController implements Initializable {
 				runTraitementImage();
 				imageSource.setImage(img.getImageSource());
 				statusButton.setText("Origin");
-				System.out.println("Image is changed");
+				
 			}
 		}
 
@@ -82,23 +81,10 @@ public class AppMainController implements Initializable {
 		}
 	}
 
-	private void ListingThreads() {
-		Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-
-		String line = "-------------------------------\n";
-		System.out.format(line + "Thread counter : %d\n" + line, threadSet.size());
-		for (Thread thread : threadSet) {
-			System.out.println(thread.getName());
-		}
-		System.out.println(line);
-	}
-
 	@FXML
 	public void onMouseReleased(MouseEvent event) {
-		System.out.println("Click released");
-
 		int value = (int) Math.round(thresholdSlider.getValue());
-		System.out.format("Value threshold : %d\n", value);
+
 		if (img != null && value != lastSliderValue) {
 			if(!statusButton.getText().equals("Origin"))
 			{
@@ -110,8 +96,6 @@ public class AppMainController implements Initializable {
 	}
 
 	void runTraitementImage() {
-
-		ListingThreads();
 		for (Thread t : Thread.getAllStackTraces().keySet()) {
 			if (t.getName().equals("Process Image")) {
 				if (t != null) {
@@ -119,10 +103,8 @@ public class AppMainController implements Initializable {
 				}
 			}
 		}
-		ListingThreads();
-
+		
 		new Thread(() -> {
-			System.out.println("Inside : " + Thread.currentThread().getName());
 			Thread.currentThread().setName("Process Image");
 			Image newImg = img.getImageOut((int) Math.round(thresholdSlider.getValue()));
 			javafx.application.Platform.runLater(() -> {
@@ -133,6 +115,6 @@ public class AppMainController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		System.out.println("Initialize");
+
 	}
 }
