@@ -60,8 +60,14 @@ public class Main extends Application {
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}		
 	}
+	
+	@Override
+	public void stop() throws Exception {
+		AppMainController.stopThreadImage();
+		System.out.println("Stop stage and threads ...");
+    }
 
 	public static void main(String[] args) {
 		launch(args);

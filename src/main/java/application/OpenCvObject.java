@@ -44,9 +44,13 @@ public class OpenCvObject {
 	public Image getImageIntermediate(Integer thresholdValue ) {
 		return this.checked ? ThreholdImg(matrix, thresholdValue) : null;
 	}
-
+	
 	public Image getImageOut(Integer thresholdValue) {
-		return this.checked ? EnvelopeImg(matrix, thresholdValue ) : null;
+		return this.checked ? EnvelopeImg(null, matrix, thresholdValue ) : null;
+	}
+
+	public Image getImageOut(Thread thread, Integer thresholdValue) {
+		return this.checked ? EnvelopeImg(thread, matrix, thresholdValue ) : null;
 	}
 
 	private Image ConvertToImg(Mat matrix) {
@@ -82,7 +86,7 @@ public class OpenCvObject {
 		return new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}
 	
-	private Image EnvelopeImg(Mat matrix, Integer thresholdValue )
+	private Image EnvelopeImg(Thread thread, Mat matrix, Integer thresholdValue )
 	{
 		if(thresholdValue == null)
 		{
@@ -109,6 +113,8 @@ public class OpenCvObject {
         Imgproc.findContours(cannyOutput, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
         List<MatOfPoint> hullList = new ArrayList<>();
         for (MatOfPoint contour : contours) {
+        	if(thread != null && thread.isInterrupted()) return null;
+        	
             MatOfInt hull = new MatOfInt();
             Imgproc.convexHull(contour, hull, true);
             Point[] contourArray = contour.toArray();
@@ -123,6 +129,9 @@ public class OpenCvObject {
         Mat drawing = Mat.zeros(cannyOutput.size(), CvType.CV_8UC3);
         Scalar color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
         for (int i = 0; i < contours.size(); i++) {
+        	
+        	if(thread != null && thread.isInterrupted()) return null;
+        	
             //Imgproc.drawContours(drawing, contours, i, color);
             Imgproc.drawContours(drawing, hullList, i, color );
         }

@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -64,7 +65,6 @@ public class AppMainController implements Initializable {
 				
 			}
 		}
-
 	};
 
 	// Event Listener on Button[#openButton].onAction
@@ -96,22 +96,30 @@ public class AppMainController implements Initializable {
 	}
 
 	void runTraitementImage() {
-		for (Thread t : Thread.getAllStackTraces().keySet()) {
-			if (t.getName().equals("Process Image")) {
-				if (t != null) {
-					t.interrupt();
-				}
-			}
-		}
+		
+		stopThreadImage();
 		
 		new Thread(() -> {
 			Thread.currentThread().setName("Process Image");
-			Image newImg = img.getImageOut((int) Math.round(thresholdSlider.getValue()));
+			Image newImg = img.getImageOut(Thread.currentThread(), (int) Math.round(thresholdSlider.getValue()));
 			javafx.application.Platform.runLater(() -> {
 				imageOut.setImage(newImg);
 			});
 		}).start();
 	}
+	
+	public static void stopThreadImage()
+	{
+		for (Thread t : Thread.getAllStackTraces().keySet()) {
+			if (t.getName().equals("Process Image")) {
+				if (t != null) {
+					System.out.println("delete");
+					t.interrupt();
+				}
+			}
+		}
+	}
+		
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
