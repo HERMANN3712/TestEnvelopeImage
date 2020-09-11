@@ -32,10 +32,14 @@
 				<Button fx:id="statusButton" mnemonicParsing="false"
 					onAction="#onIntermediateButton" text="Intermediate"
 					AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="0.0" />
+				<CheckBox fx:id="cbOnlyEnvelop" mnemonicParsing="false"
+					onMouseClicked="#onMouseClicked" selected="true"
+					text="Only envelop" AnchorPane.leftAnchor="155.0"
+					AnchorPane.topAnchor="0.0" />
 				<Slider fx:id="thresholdSlider" max="255.0"
 					onMouseReleased="#onMouseReleased" showTickLabels="true"
 					showTickMarks="true" value="100.0" AnchorPane.bottomAnchor="0.0"
-					AnchorPane.leftAnchor="145.0" AnchorPane.rightAnchor="0.0"
+					AnchorPane.leftAnchor="255.0" AnchorPane.rightAnchor="0.0"
 					AnchorPane.topAnchor="0.0" />
 			</children>
 			<padding>

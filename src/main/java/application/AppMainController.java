@@ -11,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -28,6 +29,8 @@ public class AppMainController implements Initializable {
 	private Button openButton;
 	@FXML
 	private Button statusButton;
+	@FXML
+	private CheckBox cbOnlyEnvelop;
 	@FXML
 	private GridPane gridPane;
 	@FXML
@@ -63,6 +66,8 @@ public class AppMainController implements Initializable {
 
 			if (img != null) {
 
+				img.setOnlyEnvelop(cbOnlyEnvelop.isSelected());
+
 				runTraitementImage();
 				imageSource.setImage(img.getImageSource());
 				statusButton.setText("Intermediate");
@@ -97,6 +102,17 @@ public class AppMainController implements Initializable {
 			runTraitementImage();
 			lastSliderValue = value;
 		}
+	}
+
+	// Event Listener on CheckBox[#checkBox].onMouseClicked
+	@FXML
+	public void onMouseClicked(MouseEvent event) {
+		if (img == null)
+			return;
+		boolean diff = img.isOnlyEnvelop() != cbOnlyEnvelop.isSelected();
+		img.setOnlyEnvelop(cbOnlyEnvelop.isSelected());
+		if (diff)
+			runTraitementImage();
 	}
 
 	void runTraitementImage() {

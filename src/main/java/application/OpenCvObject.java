@@ -24,14 +24,24 @@ public class OpenCvObject {
 
 	private Mat matrix;
 
-	public boolean checked = false;
+	public boolean isValid = false;
+
+	private boolean onlyEnvelop = true;
+
+	public boolean isOnlyEnvelop() {
+		return onlyEnvelop;
+	}
+
+	public void setOnlyEnvelop(boolean onlyEnvelop) {
+		this.onlyEnvelop = onlyEnvelop;
+	}
 
 	public OpenCvObject(String fileName) {
 		this.matrix = Imgcodecs.imread(fileName);
 
 		if (matrix.empty())
 			return;
-		this.checked = true;
+		this.isValid = true;
 		System.out.format("Size : %d x %d\n", matrix.height(), matrix.width());
 		System.out.println("Image Loaded");
 	}
@@ -39,15 +49,15 @@ public class OpenCvObject {
 	public boolean isLarge = false;
 
 	public Image getImageSource() {
-		return this.checked ? ConvertToImg(matrix) : null;
+		return this.isValid ? ConvertToImg(matrix) : null;
 	}
 
 	public Image getImageIntermediate(Integer thresholdValue) {
-		return this.checked ? ThreholdImg(matrix, thresholdValue) : null;
+		return this.isValid ? ThreholdImg(matrix, thresholdValue) : null;
 	}
 
 	public Image getImageOut(Integer thresholdValue) {
-		return this.checked ? EnvelopeImg(matrix, thresholdValue) : null;
+		return this.isValid ? EnvelopeImg(matrix, thresholdValue) : null;
 	}
 
 	private Image ConvertToImg(Mat matrix) {
@@ -137,8 +147,8 @@ public class OpenCvObject {
 				return null;
 			}
 
-			// affichage d'un contours
-			Imgproc.drawContours(drawing, contours, i, color);
+			if (!onlyEnvelop)
+				Imgproc.drawContours(drawing, contours, i, color);// affichage d'un contours
 
 			// affichage d'une enveloppe
 			Imgproc.drawContours(drawing, hullList, i, color);
