@@ -12,9 +12,9 @@
 	xmlns:fx="http://javafx.com/fxml/1"
 	fx:controller="application.AppMainController">
 	<columnConstraints>
-		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+		<ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" minWidth="10.0"
 			prefWidth="100.0" />
-		<ColumnConstraints hgrow="SOMETIMES" minWidth="10.0"
+		<ColumnConstraints hgrow="SOMETIMES" percentWidth="50.0" minWidth="10.0"
 			prefWidth="100.0" />
 	</columnConstraints>
 	<rowConstraints>
