@@ -6,8 +6,8 @@ module EnvelopeImage {
 	requires opencv.java;
 	requires javafx.swing;
 	requires java.desktop;
-	
+
 	opens application to javafx.fxml;
-	
+
 	exports application;
 }

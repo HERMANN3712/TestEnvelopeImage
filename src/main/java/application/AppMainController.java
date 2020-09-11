@@ -21,9 +21,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class AppMainController implements Initializable {
-	    
-    private static String THREADNAME = "Process Image " + UUID.randomUUID().toString();
-    
+
+	private static String THREADNAME = "Process Image " + UUID.randomUUID().toString();
+
 	@FXML
 	private Button openButton;
 	@FXML
@@ -44,7 +44,7 @@ public class AppMainController implements Initializable {
 	// Event Listener on Button[#openButton].onAction
 	@FXML
 	public void onOpenButton(ActionEvent event) {
-		
+
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Open Resource File");
 		fileChooser.getExtensionFilters().addAll(
@@ -66,7 +66,7 @@ public class AppMainController implements Initializable {
 				runTraitementImage();
 				imageSource.setImage(img.getImageSource());
 				statusButton.setText("Intermediate");
-				
+
 			}
 		}
 	};
@@ -91,8 +91,7 @@ public class AppMainController implements Initializable {
 		int value = (int) Math.round(thresholdSlider.getValue());
 
 		if (img != null && value != lastSliderValue) {
-			if(!statusButton.getText().equals("Intermediate"))
-			{
+			if (!statusButton.getText().equals("Intermediate")) {
 				imageSource.setImage(img.getImageIntermediate((int) thresholdSlider.getValue()));
 			}
 			runTraitementImage();
@@ -101,9 +100,9 @@ public class AppMainController implements Initializable {
 	}
 
 	void runTraitementImage() {
-		
+
 		stopThreadImage();
-		
+
 		new Thread(() -> {
 			Thread.currentThread().setName(THREADNAME);
 			Image newImg = img.getImageOut((int) Math.round(thresholdSlider.getValue()));
@@ -112,9 +111,8 @@ public class AppMainController implements Initializable {
 			});
 		}).start();
 	}
-	
-	public static void stopThreadImage()
-	{
+
+	public static void stopThreadImage() {
 		for (Thread t : Thread.getAllStackTraces().keySet()) {
 			if (t.getName().equals(THREADNAME)) {
 				if (t != null && !t.isInterrupted()) {
@@ -124,7 +122,6 @@ public class AppMainController implements Initializable {
 			}
 		}
 	}
-		
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

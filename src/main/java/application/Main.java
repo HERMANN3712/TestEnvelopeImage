@@ -21,33 +21,32 @@ public class Main extends Application {
 			loadJarDll("opencv_java440.dll");
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 	public static void loadJarDll(String name) throws IOException {
-	    InputStream in = Main.class.getClassLoader().getResourceAsStream(name);
+		InputStream in = Main.class.getClassLoader().getResourceAsStream(name);
 
-	    byte[] buffer = new byte[1024];
-	    int read = -1;
-	    File temp = File.createTempFile(name, "");
-	    FileOutputStream fos = new FileOutputStream(temp);
+		byte[] buffer = new byte[1024];
+		int read = -1;
+		File temp = File.createTempFile(name, "");
+		FileOutputStream fos = new FileOutputStream(temp);
 
-	    while((read = in.read(buffer)) != -1) {
-	        fos.write(buffer, 0, read);
-	    }
-	    fos.close();
-	    in.close();
+		while ((read = in.read(buffer)) != -1) {
+			fos.write(buffer, 0, read);
+		}
+		fos.close();
+		in.close();
 
-	    System.load(temp.getAbsolutePath());
+		System.load(temp.getAbsolutePath());
 	}
-	
-	
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
-			
+
 			loader.setLocation(Main.class.getResource("AppMain.fxml"));
 			root = (GridPane) loader.load();
 
@@ -60,15 +59,15 @@ public class Main extends Application {
 			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}		
+		}
 	}
-	
+
 	@Override
 	public void stop() throws Exception {
 		System.exit(0);
 		AppMainController.stopThreadImage();
-		System.out.println("Stop stage and threads ...");				
-    }
+		System.out.println("Stop stage and threads ...");
+	}
 
 	public static void main(String[] args) {
 		launch(args);
