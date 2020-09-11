@@ -46,12 +46,12 @@ public class OpenCvObject {
 		System.out.println("Image Loaded");
 		System.out.format("Size : %d x %d\n", matrix.height(), matrix.width());
 		
-		// L'image dont l'un des cotés dépasse 800px est redimmensionné 		
+		// Image which one of sides exceeds 800px is resized		
 		if(matrix.height()>800 || matrix.width() > 800)
 		{
 			Size scaleSize = new Size();
 			
-			// Le cote le plus grand aura comme valeur 800px et on gardera le ratio			
+			// Larger side equals 800px and sides keep ratio		
 			if(matrix.height() > matrix.width())
 			{
 				scaleSize = new Size((int)((double)matrix.width() / matrix.height() * 800), 800);
@@ -87,7 +87,7 @@ public class OpenCvObject {
 		return new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}
 
-	// Retouche de l'image avant traitment
+	// Image retouching before processing
 	private Mat ThreholdMat(Mat matrix, Integer thresholdValue) {
 		if (thresholdValue == null) {
 			thresholdValue = 100;
@@ -106,11 +106,11 @@ public class OpenCvObject {
 		// Inverted
 		int thresholdType = 1;
 
-		// Seuillage et transformation de l'image source en noir et blanc
+		// Threshold and transformation of the source image in black and white
 		Imgproc.threshold(srcGray, output, thresholdValue, MAX_BINARY_VALUE, thresholdType);
 
-		// Le filtre de Canny permet la détection des contours, il est non utilisé
-		// préférable au seuillage
+		// Canny filter allows the detection of edges but it is not used
+		// because preferable to thresholding
 		// Imgproc.Canny(srcGray, output, thresholdValue, thresholdValue * 2);
 
 		return output;
@@ -127,7 +127,7 @@ public class OpenCvObject {
 		return new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}
 
-	// Traitement de l'enveloppe convexe des contours
+	// Treatment of convex hull and contours
 	private Image EnvelopeImg(Mat matrix, Integer thresholdValue) {
 
 		matrix = ThreholdMat(matrix, thresholdValue);
@@ -138,15 +138,15 @@ public class OpenCvObject {
 		Mat hierarchy = new Mat(); // non utilisé
 		List<MatOfPoint> contours = new ArrayList<>();
 
-		// Récupération des contours = tableaux de points
+		// Contour recovery = arrays of points
 		Imgproc.findContours(matrix, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
 
 		
 		List<MatOfPoint> hullList = new ArrayList<>();
-		// Important le contour dont l'aire ne dépasse pas 1000px est exclus
+		// Important !! Contour whose area does not exceed 1000px is excluded
 		contours.removeIf(x -> Imgproc.contourArea(x) < 1000);
 
-		// Création de la liste des contours et des enveloppes
+		// Creation of the list of contours and envelopes
 		for (MatOfPoint contour : contours) {
 
 			MatOfInt hull = new MatOfInt();	
@@ -162,12 +162,12 @@ public class OpenCvObject {
 			hullList.add(new MatOfPoint(hullPoints));
 		}
 
-		// Itération sur la liste des contours et des enveloppes
+		// Iterate over the list of contours and envelopes
 		Mat drawing = Mat.zeros(matrix.size(), CvType.CV_8UC3);
 		Scalar color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
 		for (int i = 0; i < contours.size(); i++) {
 
-			// si le thread courant est interrompu, on sort de la méthode
+			// If current thread is interrupted, exit out method
 			if (t != null && t.isInterrupted()) {
 				System.out.println("... stop process");
 				return null;
@@ -175,12 +175,12 @@ public class OpenCvObject {
 			
 
 			if (!onlyEnvelop)
-				Imgproc.drawContours(drawing, contours, i, color);// Affichage d'un contours
+				Imgproc.drawContours(drawing, contours, i, color);// Draw a contour
 
-			// Affichage d'une enveloppe
+			// Draw an envelope
 			Imgproc.drawContours(drawing, hullList, i, color);
 
-			// !! Important le contours et l'enveloppe correspondante on la même couleur
+			// Important !! Contour and corresponding envelope have same color
 			color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
 		}
 
