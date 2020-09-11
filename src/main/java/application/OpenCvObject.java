@@ -15,6 +15,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
+import static org.opencv.imgproc.Imgproc.*;
 
 import javafx.scene.image.Image;
 
@@ -38,12 +39,32 @@ public class OpenCvObject {
 
 	public OpenCvObject(String fileName) {
 		this.matrix = Imgcodecs.imread(fileName);
-
+		
 		if (matrix.empty())
 			return;
 		this.isValid = true;
-		System.out.format("Size : %d x %d\n", matrix.height(), matrix.width());
 		System.out.println("Image Loaded");
+		System.out.format("Size : %d x %d\n", matrix.height(), matrix.width());
+		
+		// L'image dont l'un des cotés dépasse 800px est redimmensionné 		
+		if(matrix.height()>800 || matrix.width() > 800)
+		{
+			Size scaleSize = new Size();
+			
+			// Le cote le plus grand aura comme valeur 800px et on gardera le ratio			
+			if(matrix.height() > matrix.width())
+			{
+				scaleSize = new Size((int)((double)matrix.width() / matrix.height() * 800), 800);
+			} else
+			{
+				scaleSize = new Size(800, (int)((double)matrix.height() / matrix.width() * 800));
+			}
+			
+			Imgproc.resize(matrix, matrix, scaleSize, 0, 0, INTER_AREA);
+			
+			System.out.println("Image reesized");
+			System.out.format("Size : %d x %d\n", matrix.height(), matrix.width());
+		}
 	}
 
 	public boolean isLarge = false;
@@ -120,13 +141,18 @@ public class OpenCvObject {
 		// Récupération des contours = tableaux de points
 		Imgproc.findContours(matrix, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
 
+		
 		List<MatOfPoint> hullList = new ArrayList<>();
+		// Important le contour dont l'aire ne dépasse pas 1000px est exclus
+		contours.removeIf(x -> Imgproc.contourArea(x) < 1000);
 
-		// création de la liste des contours et des enveloppes
+		// Création de la liste des contours et des enveloppes
 		for (MatOfPoint contour : contours) {
 
-			MatOfInt hull = new MatOfInt();
+			MatOfInt hull = new MatOfInt();	
 			Imgproc.convexHull(contour, hull, true);
+					
+			
 			Point[] contourArray = contour.toArray();
 			Point[] hullPoints = new Point[hull.rows()];
 			List<Integer> hullContourIdxList = hull.toList();
@@ -146,11 +172,12 @@ public class OpenCvObject {
 				System.out.println("... stop process");
 				return null;
 			}
+			
 
 			if (!onlyEnvelop)
-				Imgproc.drawContours(drawing, contours, i, color);// affichage d'un contours
+				Imgproc.drawContours(drawing, contours, i, color);// Affichage d'un contours
 
-			// affichage d'une enveloppe
+			// Affichage d'une enveloppe
 			Imgproc.drawContours(drawing, hullList, i, color);
 
 			// !! Important le contours et l'enveloppe correspondante on la même couleur
