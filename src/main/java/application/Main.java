@@ -65,8 +65,9 @@ public class Main extends Application {
 	
 	@Override
 	public void stop() throws Exception {
+		System.exit(0);
 		AppMainController.stopThreadImage();
-		System.out.println("Stop stage and threads ...");
+		System.out.println("Stop stage and threads ...");				
     }
 
 	public static void main(String[] args) {

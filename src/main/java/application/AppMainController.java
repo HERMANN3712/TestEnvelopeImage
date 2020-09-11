@@ -81,6 +81,7 @@ public class AppMainController implements Initializable {
 		}
 	}
 
+	// Event Listener on Button[#statusButton].onMouseReleased
 	@FXML
 	public void onMouseReleased(MouseEvent event) {
 		int value = (int) Math.round(thresholdSlider.getValue());
@@ -101,7 +102,7 @@ public class AppMainController implements Initializable {
 		
 		new Thread(() -> {
 			Thread.currentThread().setName("Process Image");
-			Image newImg = img.getImageOut(Thread.currentThread(), (int) Math.round(thresholdSlider.getValue()));
+			Image newImg = img.getImageOut((int) Math.round(thresholdSlider.getValue()));
 			javafx.application.Platform.runLater(() -> {
 				imageOut.setImage(newImg);
 			});
@@ -112,8 +113,7 @@ public class AppMainController implements Initializable {
 	{
 		for (Thread t : Thread.getAllStackTraces().keySet()) {
 			if (t.getName().equals("Process Image")) {
-				if (t != null) {
-					System.out.println("delete");
+				if (t != null && !t.isInterrupted()) {
 					t.interrupt();
 				}
 			}

@@ -12,6 +12,7 @@ import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
@@ -46,11 +47,7 @@ public class OpenCvObject {
 	}
 	
 	public Image getImageOut(Integer thresholdValue) {
-		return this.checked ? EnvelopeImg(null, matrix, thresholdValue ) : null;
-	}
-
-	public Image getImageOut(Thread thread, Integer thresholdValue) {
-		return this.checked ? EnvelopeImg(thread, matrix, thresholdValue ) : null;
+		return this.checked ? EnvelopeImg(matrix, thresholdValue ) : null;
 	}
 
 	private Image ConvertToImg(Mat matrix) {
@@ -58,62 +55,58 @@ public class OpenCvObject {
 		Imgcodecs.imencode(".bmp", matrix, byteMat);
 		return new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}
-
-	@SuppressWarnings("unused")
-	private Image ThreholdImg(Mat matrix, Integer thresholdValue )
+	
+	private Mat ThreholdMat(Mat matrix, Integer thresholdValue )
 	{
 		if(thresholdValue == null)
 		{
 			thresholdValue = 100;			
 		}
-		
-		Mat srcGray = new Mat();
-		Mat dst = new Mat();		
-		
+        
+        Mat srcGray = new Mat();
+        Mat output = new Mat();
+        
         // Convert the image to Gray
         Imgproc.cvtColor(matrix, srcGray, Imgproc.COLOR_BGR2GRAY);
+        Imgproc.blur(srcGray, srcGray, new Size(5, 5));
         
+        //  0: Binary > 1: Binary Inverted > 2: Truncate > 3: To Zero > 4: To Zero Inverted
+        int thresholdType = 1;
+
+        Imgproc.threshold(srcGray, output, thresholdValue, MAX_BINARY_VALUE, thresholdType);
+        //Imgproc.Canny(srcGray, output, thresholdValue, thresholdValue * 2);        
         
-        
-		
-		//  0: Binary > 1: Binary Inverted > 2: Truncate > 3: To Zero > 4: To Zero Inverted
-		int thresholdType = 1;
-		
-        Imgproc.threshold(srcGray, dst, thresholdValue, MAX_BINARY_VALUE, thresholdType);
-		
+        return output;
+	}
+	
+	private Image ThreholdImg(Mat matrix, Integer thresholdValue )
+	{
+		matrix = ThreholdMat(matrix, thresholdValue );		
+		return getImage(matrix);
+	}
+	
+	private Image getImage(Mat matrix)
+	{
 		MatOfByte byteMat = new MatOfByte();
-		Imgcodecs.imencode(".bmp", dst, byteMat);
+		Imgcodecs.imencode(".bmp", matrix, byteMat);
 		return new Image(new ByteArrayInputStream(byteMat.toArray()));
 	}
 	
-	private Image EnvelopeImg(Thread thread, Mat matrix, Integer thresholdValue )
+	private Image EnvelopeImg(Mat matrix, Integer thresholdValue )
 	{
-		if(thresholdValue == null)
-		{
-			thresholdValue = 100;			
-		}
 		
+		matrix = ThreholdMat(matrix, thresholdValue);	
+		Thread t = Thread.currentThread();
+			
 		
-		Mat srcGray = new Mat();
-        Mat cannyOutput = new Mat();
-        
-        Imgproc.cvtColor(matrix, srcGray, Imgproc.COLOR_BGR2GRAY);
-        //Imgproc.blur(srcGray, srcGray, new Size(3, 3));
-        
-        Random rng = new Random(12345);
-        
-        //Imgproc.Canny(srcGray, cannyOutput, thresholdValue, thresholdValue * 2);
-        int thresholdType = 1;
-        Imgproc.threshold(srcGray, cannyOutput, thresholdValue, MAX_BINARY_VALUE, thresholdType);
-        
+		Random rng = new Random(12345);
         List<MatOfPoint> contours = new ArrayList<>();
         Mat hierarchy = new Mat();
         
         
-        Imgproc.findContours(cannyOutput, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
+        Imgproc.findContours(matrix, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
         List<MatOfPoint> hullList = new ArrayList<>();
         for (MatOfPoint contour : contours) {
-        	if(thread != null && thread.isInterrupted()) return null;
         	
             MatOfInt hull = new MatOfInt();
             Imgproc.convexHull(contour, hull, true);
@@ -126,19 +119,16 @@ public class OpenCvObject {
             hullList.add(new MatOfPoint(hullPoints));
         }
         
-        Mat drawing = Mat.zeros(cannyOutput.size(), CvType.CV_8UC3);
+        Mat drawing = Mat.zeros(matrix.size(), CvType.CV_8UC3);
         Scalar color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));
         for (int i = 0; i < contours.size(); i++) {
+        	if(t != null && t.isInterrupted()) { System.out.println("... stop process"); return null; }
         	
-        	if(thread != null && thread.isInterrupted()) return null;
-        	
-            //Imgproc.drawContours(drawing, contours, i, color);
-            Imgproc.drawContours(drawing, hullList, i, color );
-        }
+        	Imgproc.drawContours(drawing, contours, i, color);            
+        	Imgproc.drawContours(drawing, hullList, i, color );
+        	color = new Scalar(rng.nextInt(256), rng.nextInt(256), rng.nextInt(256));            
+        }		
 		
-		
-		MatOfByte byteMat = new MatOfByte();
-		Imgcodecs.imencode(".bmp", drawing, byteMat);
-		return new Image(new ByteArrayInputStream(byteMat.toArray()));
+		return getImage(drawing);
 	}
 }
