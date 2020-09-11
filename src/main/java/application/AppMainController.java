@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.UUID;
 
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -20,6 +21,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
 
 public class AppMainController implements Initializable {
+	    
+    private static String THREADNAME = "Process Image " + UUID.randomUUID().toString();
+    
 	@FXML
 	private Button openButton;
 	@FXML
@@ -101,7 +105,7 @@ public class AppMainController implements Initializable {
 		stopThreadImage();
 		
 		new Thread(() -> {
-			Thread.currentThread().setName("Process Image");
+			Thread.currentThread().setName(THREADNAME);
 			Image newImg = img.getImageOut((int) Math.round(thresholdSlider.getValue()));
 			javafx.application.Platform.runLater(() -> {
 				imageOut.setImage(newImg);
@@ -112,8 +116,9 @@ public class AppMainController implements Initializable {
 	public static void stopThreadImage()
 	{
 		for (Thread t : Thread.getAllStackTraces().keySet()) {
-			if (t.getName().equals("Process Image")) {
+			if (t.getName().equals(THREADNAME)) {
 				if (t != null && !t.isInterrupted()) {
+					System.out.println(THREADNAME + " interrupted");
 					t.interrupt();
 				}
 			}
