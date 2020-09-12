@@ -146,10 +146,17 @@ public class OpenCvObject {
 		Mat hierarchy = new Mat(); // not used
 		List<MatOfPoint> contours = new ArrayList<>();
 
-		List<MatOfPoint> hullList = new ArrayList<>();
 		// Contour recovery = arrays of points
 		Imgproc.findContours(matrix, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
-		contours.removeIf(x -> Imgproc.contourArea(x) < 1000);
+
+		List<MatOfPoint> hullList = new ArrayList<>();
+		
+		if(isFilter)
+		{
+			System.out.format("Before removal ... number of contours: %d\n", contours.size());
+			contours.removeIf(x -> Imgproc.contourArea(x) < 1000);
+			System.out.format("After  removal ... number of contours: %d\n", contours.size());
+		}
 
 		// Creation of the list of contours and envelopes
 		for (MatOfPoint contour : contours) {
