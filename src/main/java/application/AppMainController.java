@@ -123,7 +123,7 @@ public class AppMainController implements Initializable {
 			Thread.currentThread().setName(THREADNAME);
 			Image newImg = img.getImageOut((int) Math.round(thresholdSlider.getValue()));
 			javafx.application.Platform.runLater(() -> {
-				imageOut.setImage(newImg);
+				if(newImg != null) imageOut.setImage(newImg);
 			});
 		}).start();
 	}
