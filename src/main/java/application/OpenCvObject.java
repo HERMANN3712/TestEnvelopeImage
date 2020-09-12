@@ -33,41 +33,50 @@ public class OpenCvObject {
 		return onlyEnvelop;
 	}
 
+	private boolean isFilter = false;
+
 	public void setOnlyEnvelop(boolean onlyEnvelop) {
 		this.onlyEnvelop = onlyEnvelop;
 	}
 
+	public OpenCvObject(String fileName, boolean filter) {
+		this.isFilter = filter;
+		Ininitizate(fileName);
+	}
+
 	public OpenCvObject(String fileName) {
+		Ininitizate(fileName);
+	}
+
+	public void Ininitizate(String fileName) {
 		this.matrix = Imgcodecs.imread(fileName);
-		
+
 		if (matrix.empty())
 			return;
 		this.isValid = true;
 		System.out.println("Image Loaded");
 		System.out.format("Size : %d x %d\n", matrix.height(), matrix.width());
-		
-		// Image which one of sides exceeds 800px is resized		
-		if(matrix.height()>800 || matrix.width() > 800)
-		{
+
+		if (!isFilter)
+			return;
+
+		// Image which one of sides exceeds 800px is resized
+		if (matrix.height() > 800 || matrix.width() > 800) {
 			Size scaleSize = new Size();
-			
-			// Larger side equals 800px and sides keep ratio		
-			if(matrix.height() > matrix.width())
-			{
-				scaleSize = new Size((int)((double)matrix.width() / matrix.height() * 800), 800);
-			} else
-			{
-				scaleSize = new Size(800, (int)((double)matrix.height() / matrix.width() * 800));
+
+			// Larger side equals 800px and sides keep ratio
+			if (matrix.height() > matrix.width()) {
+				scaleSize = new Size((int) ((double) matrix.width() / matrix.height() * 800), 800);
+			} else {
+				scaleSize = new Size(800, (int) ((double) matrix.height() / matrix.width() * 800));
 			}
-			
+
 			Imgproc.resize(matrix, matrix, scaleSize, 0, 0, INTER_AREA);
-			
+
 			System.out.println("Image reesized");
 			System.out.format("Size : %d x %d\n", matrix.height(), matrix.width());
 		}
 	}
-
-	public boolean isLarge = false;
 
 	public Image getImageSource() {
 		return this.isValid ? ConvertToImg(matrix) : null;
