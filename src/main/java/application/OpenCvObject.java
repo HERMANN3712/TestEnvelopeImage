@@ -33,7 +33,8 @@ public class OpenCvObject {
 		return onlyEnvelop;
 	}
 
-	private boolean isFilter = false;
+	// default value of filter = true
+	private boolean isFilter = true;
 
 	public void setOnlyEnvelop(boolean onlyEnvelop) {
 		this.onlyEnvelop = onlyEnvelop;
