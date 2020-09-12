@@ -107,8 +107,7 @@ public class OpenCvObject {
 
 		// Convert the image to Gray
 		Imgproc.cvtColor(matrix, srcGray, Imgproc.COLOR_BGR2GRAY);
-		// Add blur (on floute l'image pour l’épaissir et pour mettre en évidence les
-		// contours)
+		// Add blur (blur image to thicken it and to highlight contour)
 		Imgproc.blur(srcGray, srcGray, new Size(5, 5));
 
 		// 0: Binary > 1: Binary Inverted > 2: Truncate > 3: To Zero > 4: To Zero
@@ -144,24 +143,20 @@ public class OpenCvObject {
 
 		Random rng = new Random(12345);
 
-		Mat hierarchy = new Mat(); // non utilisé
+		Mat hierarchy = new Mat(); // not used
 		List<MatOfPoint> contours = new ArrayList<>();
 
+		List<MatOfPoint> hullList = new ArrayList<>();
 		// Contour recovery = arrays of points
 		Imgproc.findContours(matrix, contours, hierarchy, Imgproc.RETR_TREE, Imgproc.CHAIN_APPROX_NONE);
-
-		
-		List<MatOfPoint> hullList = new ArrayList<>();
-		// Important !! Contour whose area does not exceed 1000px is excluded
 		contours.removeIf(x -> Imgproc.contourArea(x) < 1000);
 
 		// Creation of the list of contours and envelopes
 		for (MatOfPoint contour : contours) {
 
-			MatOfInt hull = new MatOfInt();	
+			MatOfInt hull = new MatOfInt();
 			Imgproc.convexHull(contour, hull, true);
-					
-			
+
 			Point[] contourArray = contour.toArray();
 			Point[] hullPoints = new Point[hull.rows()];
 			List<Integer> hullContourIdxList = hull.toList();
@@ -181,7 +176,6 @@ public class OpenCvObject {
 				System.out.println("... stop process");
 				return null;
 			}
-			
 
 			if (!onlyEnvelop)
 				Imgproc.drawContours(drawing, contours, i, color);// Draw a contour
