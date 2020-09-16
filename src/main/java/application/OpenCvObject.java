@@ -54,7 +54,7 @@ public class OpenCvObject {
 	}
 
 	public void Ininitizate(String fileName) {
-		if(new File(fileName).exists()) return;
+		if(!new File(fileName).exists()) return;
 		try {
 			
 			// this.matrix = Imgcodecs.imread(fileName);
