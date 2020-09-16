@@ -1,6 +1,10 @@
 package application;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -50,8 +54,26 @@ public class OpenCvObject {
 	}
 
 	public void Ininitizate(String fileName) {
-		this.matrix = Imgcodecs.imread(fileName);
-
+		if(new File(fileName).exists()) return;
+		try {
+			
+			// this.matrix = Imgcodecs.imread(fileName);
+			//  or			
+			// manage file paths with accents or that contain non-Ascii characters on Windows
+			// use  imdecode to create a Mat from buffer 
+			byte[] encoded;
+			encoded = Files.readAllBytes(Paths.get(fileName));
+			
+	        Mat mat = new Mat(1, encoded.length , CvType.CV_8UC1);
+			
+			mat.put(0, 0, encoded);
+			this.matrix = Imgcodecs.imdecode(mat, Imgcodecs.IMREAD_UNCHANGED);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 		if (matrix.empty())
 			return;
 		this.isValid = true;
