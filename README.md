@@ -1,6 +1,8 @@
 ## TestEnvelopeImage
 ## Outil (java) / application de base pour traiter des images avec OpenCV
 
+![Alt text](https://github.com/HERMANN3712/TestEnvelopeImage/blob/master/media/image%20application.png?raw=true "screenshot")
+
 ### Web links
 
 * OpenCV / Homepage : <https://opencv.org>
