@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -46,8 +47,9 @@ public class Main extends Application {
 		try {
 			// Load root layout from fxml file.
 			FXMLLoader loader = new FXMLLoader();
-
-			loader.setLocation(Main.class.getResource("AppMain.fxml"));
+			
+			URL url = getClass().getResource("/AppMain.fxml");
+			loader.setLocation(url);
 			root = (GridPane) loader.load();
 
 			// Show the scene containing the root layout.
