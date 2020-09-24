@@ -39,9 +39,11 @@ Download JDK 11 or later for your operating system. Make sure JAVA_HOME is prope
 <dd>Linux / Windows<dd>
 
 If you run on Linux or Windows, follow these steps:
+
 ```cd TestEnvelopeImage```
 
 To compile and run the project:
+
 ```mvn clean javafx:run```
 
 :eyes:
