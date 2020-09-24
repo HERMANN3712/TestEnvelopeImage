@@ -1,10 +1,8 @@
 ## TestEnvelopeImage
 ## Outil (java) / application de base pour traiter des images avec OpenCV
 
-![Alt text](https://github.com/HERMANN3712/TestEnvelopeImage/blob/master/media/image%20application.png?raw=true "screenshot")
-
-![Alt text](https://github.com/HERMANN3712/TestEnvelopeImage/blob/master/media/copie%20ecran.png?raw=true "screenshot")
-
+<img src="https://github.com/HERMANN3712/TestEnvelopeImage/blob/master/media/image%20application.png?raw=true" alt="screenshot" height="400"/>
+<img src="https://github.com/HERMANN3712/TestEnvelopeImage/blob/master/media/copie%20ecran.png?raw=true" alt="screenshot" height="400"/>
 
 ### Web links
 
@@ -32,8 +30,10 @@ Download JDK 11 or later for your operating system. Make sure JAVA_HOME is prope
 Linux / Windows
 
 If you run on Linux or Windows, follow these steps:
-```cd Windows```
+>```cd TestEnvelopeImage```
 
 To compile and run the project:
-```mvn clean javafx:run```
+>```mvn clean javafx:run```
 
+:eyes:
+:hamster:
