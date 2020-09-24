@@ -19,20 +19,20 @@ public class Main extends Application {
 
 	static {
 		try {
-			loadJarDll("opencv_java440");
+			loadNativeLibrary("opencv_java440");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void loadJarDll(String name) throws IOException {
+	public static void loadNativeLibrary(String name) throws IOException {
 		
-		String namelib = System.mapLibraryName(name);
-		InputStream in = Main.class.getClassLoader().getResourceAsStream(namelib);
+		String libName = System.mapLibraryName(name);
+		InputStream in = Main.class.getClassLoader().getResourceAsStream(libName);
 
 		byte[] buffer = new byte[1024];
 		int read = -1;
-		File temp = File.createTempFile(namelib, "");
+		File temp = File.createTempFile(libName, "");
 		FileOutputStream fos = new FileOutputStream(temp);
 
 		while ((read = in.read(buffer)) != -1) {
