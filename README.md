@@ -32,6 +32,7 @@ Please watch the video before starting work :
 this application to run with different options and build tools.
 
 Download JDK 11 or later for your operating system. Make sure JAVA_HOME is properly set to the JDK installation directory.
+You need the latest version of Maven software project management and Git distributed version control system.
 
 
 <dl>
