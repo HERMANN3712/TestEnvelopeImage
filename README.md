@@ -1,5 +1,5 @@
 ## TestEnvelopeImage
-## Outil (java/javaFx/maven) / exemple d'application pour traiter des images avec OpenCV
+## Outil (java/javafx/maven) / exemple d'application pour traiter des images avec OpenCV
 
 ---
 
