@@ -1,5 +1,5 @@
 ## TestEnvelopeImage
-## Outil (java) / application de base pour traiter des images avec OpenCV
+## Outil (java/javaFx/maven) / exemple d'application pour traiter des images avec OpenCV
 
 ---
 
@@ -27,7 +27,7 @@
 ### In first place
 
 Please watch the video before starting work :
-...
+...   [watch this video!](https://youtu.be/BwprSB4OtWc "Watch video!")
 
 this application to run with different options and build tools.
 
